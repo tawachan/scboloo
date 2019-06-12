@@ -27,12 +27,16 @@ onMessageListener.add('createScrapboxPage', async (message, sender, sendResponse
   const {text, title, imageUrl, projectName} = message
   const originalTitle = await getPageTitle()
   const tab = await getActiveTab()
-  const body = [`[${originalTitle} ${tab.url}]`]
+  const body = [text]
+  if (text != null && text != "") {
+    body.push("")
+  }
   if (imageUrl) {
     const responseURL = await uploadGyazo(imageUrl, tab)
-    body.push(`[${responseURL} ${tab.url}]`)
+    body.push(`[${responseURL}]`)
   }
-  body.push(text)
+  body.push(`[参照：${originalTitle} ${tab.url}]`)
+
   createScrapboxPage({
     title,
     projectName,
